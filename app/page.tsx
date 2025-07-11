@@ -6,13 +6,12 @@ import { Shield, Users, Activity, Settings, Sun, Moon } from 'lucide-react';
 
 export default function Home() {
   const router = useRouter();
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark');
 
   // Initialize theme from localStorage or system preference
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    const initialTheme = savedTheme || systemTheme;
+    const initialTheme = savedTheme || 'dark';
     setTheme(initialTheme);
   }, []);
 

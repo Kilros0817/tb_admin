@@ -28,13 +28,12 @@ const ActivityLog = dynamic(() => import('../../components/ActivityLog'), {
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('users');
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark');
 
   // Initialize theme from localStorage or system preference
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    const initialTheme = savedTheme || systemTheme;
+    const initialTheme = savedTheme || 'dark';
     setTheme(initialTheme);
   }, []);
 
