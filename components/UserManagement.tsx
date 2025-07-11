@@ -7,7 +7,7 @@ import UserStatusModal from './modals/UserStatusModal';
 
 interface User {
   id: number;
-  name: string;
+  username: string;
   email: string;
   role: string;
   status: string;
@@ -25,11 +25,11 @@ export default function UserManagement() {
 
   // Demo data moved to component level
   const users: User[] = [
-    { id: 1, name: 'John Smith', email: 'john.smith@company.com', role: 'Editor', status: 'Active', lastLogin: '2024-01-15 09:30', walletAddress: '0x1234567890abcdef1234567890abcdef12345678' },
-    { id: 2, name: 'Sarah Johnson', email: 'sarah.johnson@company.com', role: 'Viewer', status: 'Active', lastLogin: '2024-01-15 08:45', walletAddress: '0xabcdef1234567890abcdef1234567890abcdef12' },
-    { id: 3, name: 'Mike Chen', email: 'mike.chen@company.com', role: 'Admin', status: 'Active', lastLogin: '2024-01-14 16:20', walletAddress: '0x9876543210fedcba9876543210fedcba98765432' },
-    { id: 4, name: 'Emily Davis', email: 'emily.davis@company.com', role: 'Editor', status: 'Inactive', lastLogin: '2024-01-10 14:15', walletAddress: '0xfedcba0987654321fedcba0987654321fedcba09' },
-    { id: 5, name: 'Robert Wilson', email: 'robert.wilson@company.com', role: 'Viewer', status: 'Active', lastLogin: '2024-01-15 07:30', walletAddress: '0x5555666677778888999900001111222233334444' }
+    { id: 1, username: 'johnsmith', email: 'john.smith@company.com', role: 'Editor', status: 'Active', lastLogin: '2024-01-15 09:30', walletAddress: '0x1234567890abcdef1234567890abcdef12345678' },
+    { id: 2, username: 'sarahjohnson', email: 'sarah.johnson@company.com', role: 'Viewer', status: 'Active', lastLogin: '2024-01-15 08:45', walletAddress: '0xabcdef1234567890abcdef1234567890abcdef12' },
+    { id: 3, username: 'mikechen', email: 'mike.chen@company.com', role: 'Admin', status: 'Active', lastLogin: '2024-01-14 16:20', walletAddress: '0x9876543210fedcba9876543210fedcba98765432' },
+    { id: 4, username: 'emilydavis', email: 'emily.davis@company.com', role: 'Editor', status: 'Inactive', lastLogin: '2024-01-10 14:15', walletAddress: '0xfedcba0987654321fedcba0987654321fedcba09' },
+    { id: 5, username: 'robertwilson', email: 'robert.wilson@company.com', role: 'Viewer', status: 'Active', lastLogin: '2024-01-15 07:30', walletAddress: '0x5555666677778888999900001111222233334444' }
   ];
 
   // Filter users based on search term
@@ -37,7 +37,7 @@ export default function UserManagement() {
     if (!searchTerm) return users;
     
     return users.filter(user => 
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm]);
@@ -73,7 +73,7 @@ export default function UserManagement() {
   };
 
   const handleStatusToggle = (user: User) => {
-    setStatusModalUser({ id: user.id, name: user.name, status: user.status });
+    setStatusModalUser({ id: user.id, name: user.username, status: user.status });
     setIsStatusModalOpen(true);
   };
 
@@ -94,7 +94,7 @@ export default function UserManagement() {
           <div className="w-80">
             <input
               type="text"
-              placeholder="Search users by name or email..."
+              placeholder="Search users by username or email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
@@ -119,7 +119,7 @@ export default function UserManagement() {
               <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                 <td className="px-6 py-4">
                   <div>
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">{user.name}</div>
+                    <div className="text-sm font-medium text-gray-900 dark:text-white">{user.username}</div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">{user.email}</div>
                   </div>
                 </td>
@@ -180,7 +180,7 @@ export default function UserManagement() {
                   {searchTerm ? (
                     <div>
                       <p className="text-lg font-medium">No users found</p>
-                      <p className="text-sm">No users match your search criteria "{searchTerm}"</p>
+                      <p className="text-sm">No users match your search criteria for username or email "{searchTerm}"</p>
                     </div>
                   ) : (
                     <p>No users available</p>
