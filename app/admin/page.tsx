@@ -19,12 +19,6 @@ const RolesPermissions = dynamic(() => import('../../components/RolesPermissions
   </div>
 });
 
-const ActivityLog = dynamic(() => import('../../components/ActivityLog'), {
-  loading: () => <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 p-8 text-center">
-    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-    <p className="mt-4 text-gray-600 dark:text-gray-400">Loading Activity Log...</p>
-  </div>
-});
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('users');
@@ -55,8 +49,6 @@ export default function AdminDashboard() {
     switch (activeTab) {
       case 'users':
         return <UserManagement />;
-      case 'roles':
-        return <RolesPermissions />;
       case 'activity':
         return <ActivityLog />;
       default:
@@ -102,7 +94,6 @@ export default function AdminDashboard() {
           <nav className="flex space-x-8">
             {[
               { id: 'users', label: 'User Management', icon: Users },
-              { id: 'roles', label: 'Roles & Permissions', icon: Settings },
               { id: 'activity', label: 'Activity Log', icon: Activity }
             ].map(({ id, label, icon: Icon }) => (
               <button
