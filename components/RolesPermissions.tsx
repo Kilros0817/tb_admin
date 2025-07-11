@@ -8,11 +8,14 @@ interface Role {
   permissions: string[];
 }
 
-interface RolesPermissionsProps {
-  roles: Role[];
-}
+export default function RolesPermissions() {
+  // Demo data moved to component level
+  const roles: Role[] = [
+    { id: 1, name: 'Admin', description: 'Full system access and user management', userCount: 2, permissions: ['Create', 'Read', 'Update', 'Delete', 'Manage Users'] },
+    { id: 2, name: 'Editor', description: 'Can create and edit documents', userCount: 8, permissions: ['Create', 'Read', 'Update', 'Export'] },
+    { id: 3, name: 'Viewer', description: 'Read-only access to documents', userCount: 15, permissions: ['Read'] }
+  ];
 
-export default function RolesPermissions({ roles }: RolesPermissionsProps) {
   return (
     <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
       <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">

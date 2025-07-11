@@ -11,11 +11,19 @@ interface Activity {
   details: string;
 }
 
-interface ActivityLogProps {
-  activities: Activity[];
-}
+export default function ActivityLog() {
+  // Demo data moved to component level
+  const activities: Activity[] = [
+    { id: 1, timestamp: '2024-01-15 10:30:00', userName: 'John Smith', action: 'Create Document', documentName: 'Q1 Financial Report', details: 'Created new document' },
+    { id: 2, timestamp: '2024-01-15 10:15:00', userName: 'Sarah Johnson', action: 'Access Document', documentName: 'Marketing Strategy 2024', details: 'Opened document for viewing' },
+    { id: 3, timestamp: '2024-01-15 09:45:00', userName: 'Mike Chen', action: 'Edit Document', documentName: 'Employee Handbook', details: 'Modified section 3.2' },
+    { id: 4, timestamp: '2024-01-15 09:30:00', userName: 'John Smith', action: 'Login', documentName: '-', details: 'User logged into system' },
+    { id: 5, timestamp: '2024-01-15 09:20:00', userName: 'Emily Davis', action: 'Document Export', documentName: 'Project Timeline', details: 'Exported as PDF' },
+    { id: 6, timestamp: '2024-01-15 08:45:00', userName: 'Sarah Johnson', action: 'Login', documentName: '-', details: 'User logged into system' },
+    { id: 7, timestamp: '2024-01-14 16:30:00', userName: 'Robert Wilson', action: 'Access Document', documentName: 'Company Policies', details: 'Opened document for viewing' },
+    { id: 8, timestamp: '2024-01-14 16:20:00', userName: 'Mike Chen', action: 'Login', documentName: '-', details: 'User logged into system' }
+  ];
 
-export default function ActivityLog({ activities }: ActivityLogProps) {
   const getActionBadge = (action: string) => {
     const colors = {
       'Login': 'bg-blue-100 text-blue-800',

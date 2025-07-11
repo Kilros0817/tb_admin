@@ -11,11 +11,16 @@ interface User {
   lastLogin: string;
 }
 
-interface UserManagementProps {
-  users: User[];
-}
+export default function UserManagement() {
+  // Demo data moved to component level
+  const users: User[] = [
+    { id: 1, name: 'John Smith', email: 'john.smith@company.com', role: 'Editor', status: 'Active', lastLogin: '2024-01-15 09:30' },
+    { id: 2, name: 'Sarah Johnson', email: 'sarah.johnson@company.com', role: 'Viewer', status: 'Active', lastLogin: '2024-01-15 08:45' },
+    { id: 3, name: 'Mike Chen', email: 'mike.chen@company.com', role: 'Admin', status: 'Active', lastLogin: '2024-01-14 16:20' },
+    { id: 4, name: 'Emily Davis', email: 'emily.davis@company.com', role: 'Editor', status: 'Inactive', lastLogin: '2024-01-10 14:15' },
+    { id: 5, name: 'Robert Wilson', email: 'robert.wilson@company.com', role: 'Viewer', status: 'Active', lastLogin: '2024-01-15 07:30' }
+  ];
 
-export default function UserManagement({ users }: UserManagementProps) {
   const getStatusBadge = (status: string) => {
     return status === 'Active' 
       ? 'bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium'

@@ -1,10 +1,30 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Shield, Users, Activity, Settings, Plus, Sun, Moon } from 'lucide-react';
-import UserManagement from '../../components/UserManagement';
-import RolesPermissions from '../../components/RolesPermissions';
-import ActivityLog from '../../components/ActivityLog';
+import dynamic from 'next/dynamic';
+
+// Dynamic imports for tab components
+const UserManagement = dynamic(() => import('../../components/UserManagement'), {
+  loading: () => <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 p-8 text-center">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+    <p className="mt-4 text-gray-600 dark:text-gray-400">Loading User Management...</p>
+  </div>
+});
+
+const RolesPermissions = dynamic(() => import('../../components/RolesPermissions'), {
+  loading: () => <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 p-8 text-center">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+    <p className="mt-4 text-gray-600 dark:text-gray-400">Loading Roles & Permissions...</p>
+  </div>
+});
+
+const ActivityLog = dynamic(() => import('../../components/ActivityLog'), {
+  loading: () => <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 p-8 text-center">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+    <p className="mt-4 text-gray-600 dark:text-gray-400">Loading Activity Log...</p>
+  </div>
+});
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('users');
@@ -32,42 +52,16 @@ export default function AdminDashboard() {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
-  // Demo data
-  const users = [
-    { id: 1, name: 'John Smith', email: 'john.smith@company.com', role: 'Editor', status: 'Active', lastLogin: '2024-01-15 09:30' },
-    { id: 2, name: 'Sarah Johnson', email: 'sarah.johnson@company.com', role: 'Viewer', status: 'Active', lastLogin: '2024-01-15 08:45' },
-    { id: 3, name: 'Mike Chen', email: 'mike.chen@company.com', role: 'Admin', status: 'Active', lastLogin: '2024-01-14 16:20' },
-    { id: 4, name: 'Emily Davis', email: 'emily.davis@company.com', role: 'Editor', status: 'Inactive', lastLogin: '2024-01-10 14:15' },
-    { id: 5, name: 'Robert Wilson', email: 'robert.wilson@company.com', role: 'Viewer', status: 'Active', lastLogin: '2024-01-15 07:30' }
-  ];
-
-  const roles = [
-    { id: 1, name: 'Admin', description: 'Full system access and user management', userCount: 2, permissions: ['Create', 'Read', 'Update', 'Delete', 'Manage Users'] },
-    { id: 2, name: 'Editor', description: 'Can create and edit documents', userCount: 8, permissions: ['Create', 'Read', 'Update', 'Export'] },
-    { id: 3, name: 'Viewer', description: 'Read-only access to documents', userCount: 15, permissions: ['Read'] }
-  ];
-
-  const activities = [
-    { id: 1, timestamp: '2024-01-15 10:30:00', userName: 'John Smith', action: 'Create Document', documentName: 'Q1 Financial Report', details: 'Created new document' },
-    { id: 2, timestamp: '2024-01-15 10:15:00', userName: 'Sarah Johnson', action: 'Access Document', documentName: 'Marketing Strategy 2024', details: 'Opened document for viewing' },
-    { id: 3, timestamp: '2024-01-15 09:45:00', userName: 'Mike Chen', action: 'Edit Document', documentName: 'Employee Handbook', details: 'Modified section 3.2' },
-    { id: 4, timestamp: '2024-01-15 09:30:00', userName: 'John Smith', action: 'Login', documentName: '-', details: 'User logged into system' },
-    { id: 5, timestamp: '2024-01-15 09:20:00', userName: 'Emily Davis', action: 'Document Export', documentName: 'Project Timeline', details: 'Exported as PDF' },
-    { id: 6, timestamp: '2024-01-15 08:45:00', userName: 'Sarah Johnson', action: 'Login', documentName: '-', details: 'User logged into system' },
-    { id: 7, timestamp: '2024-01-14 16:30:00', userName: 'Robert Wilson', action: 'Access Document', documentName: 'Company Policies', details: 'Opened document for viewing' },
-    { id: 8, timestamp: '2024-01-14 16:20:00', userName: 'Mike Chen', action: 'Login', documentName: '-', details: 'User logged into system' }
-  ];
-
   const renderActiveTab = () => {
     switch (activeTab) {
       case 'users':
-        return <UserManagement users={users} />;
+        return <UserManagement />;
       case 'roles':
-        return <RolesPermissions roles={roles} />;
+        return <RolesPermissions />;
       case 'activity':
-        return <ActivityLog activities={activities} />;
+        return <ActivityLog />;
       default:
-        return <UserManagement users={users} />;
+        return <UserManagement />;
     }
   };
 
@@ -132,8 +126,15 @@ export default function AdminDashboard() {
           </nav>
         </div>
 
-        {/* Active Tab Content */}
-        {renderActiveTab()}
+        {/* Active Tab Content with Suspense */}
+        <Suspense fallback={
+          <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 p-8 text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600 dark:text-gray-400">Loading...</p>
+          </div>
+        }>
+          {renderActiveTab()}
+        </Suspense>
       </div>
     </div>
   );
