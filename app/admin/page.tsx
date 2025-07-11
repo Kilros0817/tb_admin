@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { Shield, Users, Activity, Settings, Plus, Sun, Moon } from 'lucide-react';
+import { Shield, Users, Activity, Settings, Sun, Moon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 
 // Dynamic imports for tab components
@@ -91,10 +91,6 @@ export default function AdminDashboard() {
                 ) : (
                   <Sun className="w-5 h-5 text-gray-600 dark:text-gray-300" />
                 )}
-              </button>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
-                <Plus className="w-4 h-4" />
-                <span>Add User</span>
               </button>
             </div>
           </div>
