@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { Shield, Users, Activity, Settings, Sun, Moon } from 'lucide-react';
+import { FileText } from 'lucide-react';
 import dynamic from 'next/dynamic';
 
 // Dynamic imports for tab components
@@ -9,6 +10,13 @@ const UserManagement = dynamic(() => import('../../components/UserManagement'), 
   loading: () => <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 p-8 text-center">
     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
     <p className="mt-4 text-gray-600 dark:text-gray-400">Loading User Management...</p>
+  </div>
+});
+
+const DocumentsList = dynamic(() => import('../../components/DocumentsList'), {
+  loading: () => <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 p-8 text-center">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+    <p className="mt-4 text-gray-600 dark:text-gray-400">Loading Documents...</p>
   </div>
 });
 
@@ -43,6 +51,8 @@ export default function AdminDashboard() {
         return <UserManagement />;
       case 'activity':
         return <ActivityLog />;
+      case 'documents':
+        return <DocumentsList />;
       default:
         return <UserManagement />;
     }
@@ -86,7 +96,8 @@ export default function AdminDashboard() {
           <nav className="flex space-x-8">
             {[
               { id: 'users', label: 'User Management', icon: Users },
-              { id: 'activity', label: 'Activity Log', icon: Activity }
+              { id: 'activity', label: 'Activity Log', icon: Activity },
+              { id: 'documents', label: 'Documents', icon: FileText }
             ].map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
