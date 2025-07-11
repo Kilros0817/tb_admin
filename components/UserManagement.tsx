@@ -102,9 +102,6 @@ export default function UserManagement() {
                     <button className="text-green-600 hover:text-green-800 dark:text-green-400">
                       <Edit className="w-4 h-4" />
                     </button>
-                    <button className="text-red-600 hover:text-red-800 dark:text-red-400">
-                      <Trash2 className="w-4 h-4" />
-                    </button>
                   </div>
                 </td>
               </tr>
