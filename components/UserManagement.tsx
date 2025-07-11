@@ -2,6 +2,7 @@
 
 import { Eye, Edit, Trash2, Copy } from 'lucide-react';
 import { useState } from 'react';
+import UserInfoModal from './modals/UserInfoModal';
 
 interface User {
   id: number;
@@ -15,6 +16,8 @@ interface User {
 
 export default function UserManagement() {
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Demo data moved to component level
   const users: User[] = [
@@ -45,8 +48,19 @@ export default function UserManagement() {
     }
   };
 
+  const handleViewUser = (userId: number) => {
+    setSelectedUserId(userId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedUserId(null);
+  };
+
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
+    <>
+      <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
       <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white">User Management</h2>
         <p className="text-sm text-gray-600 dark:text-gray-400">Manage user accounts and access</p>
@@ -94,7 +108,11 @@ export default function UserManagement() {
                 <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{user.lastLogin}</td>
                 <td className="px-6 py-4">
                   <div className="flex space-x-2">
-                    <button className="text-blue-600 hover:text-blue-800 dark:text-blue-400">
+                    <button 
+                      onClick={() => handleViewUser(user.id)}
+                      className="text-blue-600 hover:text-blue-800 dark:text-blue-400"
+                      title="View user details"
+                    >
                       <Eye className="w-4 h-4" />
                     </button>
                     <button className="text-green-600 hover:text-green-800 dark:text-green-400">
@@ -107,6 +125,16 @@ export default function UserManagement() {
           </tbody>
         </table>
       </div>
-    </div>
+      </div>
+
+      {/* User Info Modal */}
+      {selectedUserId && (
+        <UserInfoModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          userId={selectedUserId}
+        />
+      )}
+    </>
   );
 }
