@@ -1,6 +1,6 @@
 'use client';
 
-import { Eye, Edit, Trash2, Copy } from 'lucide-react';
+import { Eye, UserCheck, UserX, Copy } from 'lucide-react';
 import { useState } from 'react';
 import UserInfoModal from './modals/UserInfoModal';
 
@@ -115,9 +115,21 @@ export default function UserManagement() {
                     >
                       <Eye className="w-4 h-4" />
                     </button>
-                    <button className="text-green-600 hover:text-green-800 dark:text-green-400">
-                      <Edit className="w-4 h-4" />
-                    </button>
+                    {user.status === 'Active' ? (
+                      <button 
+                        className="text-red-600 hover:text-red-800 dark:text-red-400"
+                        title="Deactivate user"
+                      >
+                        <UserX className="w-4 h-4" />
+                      </button>
+                    ) : (
+                      <button 
+                        className="text-green-600 hover:text-green-800 dark:text-green-400"
+                        title="Activate user"
+                      >
+                        <UserCheck className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>
