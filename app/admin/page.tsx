@@ -12,13 +12,6 @@ const UserManagement = dynamic(() => import('../../components/UserManagement'), 
   </div>
 });
 
-const ActivityLog = dynamic(() => import('../../components/ActivityLog'), {
-  loading: () => <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 p-8 text-center">
-    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-    <p className="mt-4 text-gray-600 dark:text-gray-400">Loading Activity Log...</p>
-  </div>
-});
-
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('users');
   const [theme, setTheme] = useState('dark');
