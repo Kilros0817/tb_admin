@@ -3,6 +3,7 @@
 import { Eye, UserCheck, UserX, Copy } from 'lucide-react';
 import { useState } from 'react';
 import UserInfoModal from './modals/UserInfoModal';
+import UserStatusModal from './modals/UserStatusModal';
 
 interface User {
   id: number;
@@ -18,6 +19,8 @@ export default function UserManagement() {
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
+  const [statusModalUser, setStatusModalUser] = useState<{ id: number; name: string; status: string } | null>(null);
 
   // Demo data moved to component level
   const users: User[] = [
@@ -56,6 +59,16 @@ export default function UserManagement() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedUserId(null);
+  };
+
+  const handleStatusToggle = (user: User) => {
+    setStatusModalUser({ id: user.id, name: user.name, status: user.status });
+    setIsStatusModalOpen(true);
+  };
+
+  const handleCloseStatusModal = () => {
+    setIsStatusModalOpen(false);
+    setStatusModalUser(null);
   };
 
   return (
@@ -117,6 +130,7 @@ export default function UserManagement() {
                     </button>
                     {user.status === 'Active' ? (
                       <button 
+                        onClick={() => handleStatusToggle(user)}
                         className="text-red-600 hover:text-red-800 dark:text-red-400"
                         title="Deactivate user"
                       >
@@ -124,6 +138,7 @@ export default function UserManagement() {
                       </button>
                     ) : (
                       <button 
+                        onClick={() => handleStatusToggle(user)}
                         className="text-green-600 hover:text-green-800 dark:text-green-400"
                         title="Activate user"
                       >
@@ -145,6 +160,17 @@ export default function UserManagement() {
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           userId={selectedUserId}
+        />
+      )}
+
+      {/* User Status Modal */}
+      {statusModalUser && (
+        <UserStatusModal
+          isOpen={isStatusModalOpen}
+          onClose={handleCloseStatusModal}
+          userId={statusModalUser.id}
+          currentStatus={statusModalUser.status}
+          userName={statusModalUser.name}
         />
       )}
     </>
