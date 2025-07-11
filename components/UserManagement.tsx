@@ -1,7 +1,7 @@
 'use client';
 
 import { Eye, UserCheck, UserX, Copy } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import UserInfoModal from './modals/UserInfoModal';
 import UserStatusModal from './modals/UserStatusModal';
 
@@ -17,6 +17,7 @@ interface User {
 
 export default function UserManagement() {
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
@@ -30,6 +31,16 @@ export default function UserManagement() {
     { id: 4, name: 'Emily Davis', email: 'emily.davis@company.com', role: 'Editor', status: 'Inactive', lastLogin: '2024-01-10 14:15', walletAddress: '0xfedcba0987654321fedcba0987654321fedcba09' },
     { id: 5, name: 'Robert Wilson', email: 'robert.wilson@company.com', role: 'Viewer', status: 'Active', lastLogin: '2024-01-15 07:30', walletAddress: '0x5555666677778888999900001111222233334444' }
   ];
+
+  // Filter users based on search term
+  const filteredUsers = useMemo(() => {
+    if (!searchTerm) return users;
+    
+    return users.filter(user => 
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm]);
 
   const getStatusBadge = (status: string) => {
     return status === 'Active' 
@@ -75,8 +86,21 @@ export default function UserManagement() {
     <>
       <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
       <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">User Management</h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400">Manage user accounts and access</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">User Management</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Manage user accounts and access</p>
+          </div>
+          <div className="w-80">
+            <input
+              type="text"
+              placeholder="Search users by name or email..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            />
+          </div>
+        </div>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full">
@@ -90,7 +114,8 @@ export default function UserManagement() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
-            {users.map((user) => (
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((user) => (
               <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                 <td className="px-6 py-4">
                   <div>
@@ -148,7 +173,21 @@ export default function UserManagement() {
                   </div>
                 </td>
               </tr>
-            ))}
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                  {searchTerm ? (
+                    <div>
+                      <p className="text-lg font-medium">No users found</p>
+                      <p className="text-sm">No users match your search criteria "{searchTerm}"</p>
+                    </div>
+                  ) : (
+                    <p>No users available</p>
+                  )}
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
