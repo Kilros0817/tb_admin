@@ -1,7 +1,8 @@
 'use client';
 
-import { Eye, UserCheck, UserX, Copy } from 'lucide-react';
+import { Eye, UserCheck, UserX, Copy, Activity } from 'lucide-react';
 import { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import UserInfoModal from './modals/UserInfoModal';
 import UserStatusModal from './modals/UserStatusModal';
 
@@ -16,6 +17,7 @@ interface User {
 }
 
 export default function UserManagement() {
+  const router = useRouter();
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
@@ -80,6 +82,10 @@ export default function UserManagement() {
   const handleCloseStatusModal = () => {
     setIsStatusModalOpen(false);
     setStatusModalUser(null);
+  };
+
+  const handleViewActivity = (userId: number) => {
+    router.push(`/user/${userId}/activity`);
   };
 
   return (
@@ -152,6 +158,13 @@ export default function UserManagement() {
                       title="View user details"
                     >
                       <Eye className="w-4 h-4" />
+                    </button>
+                    <button 
+                      onClick={() => handleViewActivity(user.id)}
+                      className="text-green-600 hover:text-green-800 dark:text-green-400"
+                      title="View user activity log"
+                    >
+                      <Activity className="w-4 h-4" />
                     </button>
                     {user.status === 'Active' ? (
                       <button 

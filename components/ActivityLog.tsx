@@ -37,15 +37,11 @@ export default function ActivityLog() {
 
   return (
     <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <div>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Activity Log</h2>
           <p className="text-sm text-gray-600 dark:text-gray-400">Track user actions and system events</p>
         </div>
-        <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2">
-          <Download className="w-4 h-4" />
-          <span>Export</span>
-        </button>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full">
