@@ -16,6 +16,15 @@ interface User {
   walletAddress: string;
 }
 
+// Demo data moved outside component to prevent re-creation on every render
+const users: User[] = [
+  { id: 1, username: 'johnsmith', email: 'john.smith@company.com', role: 'Editor', status: 'Active', lastLogin: '2024-01-15 09:30', walletAddress: '0x1234567890abcdef1234567890abcdef12345678' },
+  { id: 2, username: 'sarahjohnson', email: 'sarah.johnson@company.com', role: 'Viewer', status: 'Active', lastLogin: '2024-01-15 08:45', walletAddress: '0xabcdef1234567890abcdef1234567890abcdef12' },
+  { id: 3, username: 'mikechen', email: 'mike.chen@company.com', role: 'Admin', status: 'Active', lastLogin: '2024-01-14 16:20', walletAddress: '0x9876543210fedcba9876543210fedcba98765432' },
+  { id: 4, username: 'emilydavis', email: 'emily.davis@company.com', role: 'Editor', status: 'Inactive', lastLogin: '2024-01-10 14:15', walletAddress: '0xfedcba0987654321fedcba0987654321fedcba09' },
+  { id: 5, username: 'robertwilson', email: 'robert.wilson@company.com', role: 'Viewer', status: 'Active', lastLogin: '2024-01-15 07:30', walletAddress: '0x5555666677778888999900001111222233334444' }
+];
+
 export default function UserManagement() {
   const router = useRouter();
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
@@ -24,15 +33,6 @@ export default function UserManagement() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [statusModalUser, setStatusModalUser] = useState<{ id: number; name: string; status: string } | null>(null);
-
-  // Demo data moved to component level
-  const users: User[] = [
-    { id: 1, username: 'johnsmith', email: 'john.smith@company.com', role: 'Editor', status: 'Active', lastLogin: '2024-01-15 09:30', walletAddress: '0x1234567890abcdef1234567890abcdef12345678' },
-    { id: 2, username: 'sarahjohnson', email: 'sarah.johnson@company.com', role: 'Viewer', status: 'Active', lastLogin: '2024-01-15 08:45', walletAddress: '0xabcdef1234567890abcdef1234567890abcdef12' },
-    { id: 3, username: 'mikechen', email: 'mike.chen@company.com', role: 'Admin', status: 'Active', lastLogin: '2024-01-14 16:20', walletAddress: '0x9876543210fedcba9876543210fedcba98765432' },
-    { id: 4, username: 'emilydavis', email: 'emily.davis@company.com', role: 'Editor', status: 'Inactive', lastLogin: '2024-01-10 14:15', walletAddress: '0xfedcba0987654321fedcba0987654321fedcba09' },
-    { id: 5, username: 'robertwilson', email: 'robert.wilson@company.com', role: 'Viewer', status: 'Active', lastLogin: '2024-01-15 07:30', walletAddress: '0x5555666677778888999900001111222233334444' }
-  ];
 
   // Filter users based on search term
   const filteredUsers = useMemo(() => {
@@ -193,7 +193,7 @@ export default function UserManagement() {
                   {searchTerm ? (
                     <div>
                       <p className="text-lg font-medium">No users found</p>
-                      <p className="text-sm">No users match your search criteria for username or email "{searchTerm}"</p>
+                      <p className="text-sm">No users match your search criteria for username or email &quot;{searchTerm}&quot;</p>
                     </div>
                   ) : (
                     <p>No users available</p>

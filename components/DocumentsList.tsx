@@ -15,21 +15,21 @@ interface Document {
   status: string;
 }
 
+// Demo data for documents - moved outside component to prevent re-creation on every render
+const documents: Document[] = [
+  { id: 1, name: 'Q1 Financial Report', type: 'PDF', size: '2.4 MB', creator: 'John Smith', createdDate: '2024-01-15', lastModified: '2024-01-15 10:30:00', status: 'Active' },
+  { id: 2, name: 'Marketing Strategy 2024', type: 'DOCX', size: '1.8 MB', creator: 'Sarah Johnson', createdDate: '2024-01-14', lastModified: '2024-01-15 09:15:00', status: 'Active' },
+  { id: 3, name: 'Employee Handbook', type: 'PDF', size: '3.2 MB', creator: 'Mike Chen', createdDate: '2024-01-10', lastModified: '2024-01-15 09:45:00', status: 'Active' },
+  { id: 4, name: 'Project Timeline', type: 'XLSX', size: '856 KB', creator: 'Emily Davis', createdDate: '2024-01-12', lastModified: '2024-01-15 08:20:00', status: 'Archived' },
+  { id: 5, name: 'Company Policies', type: 'PDF', size: '1.5 MB', creator: 'Robert Wilson', createdDate: '2024-01-08', lastModified: '2024-01-14 16:30:00', status: 'Active' },
+  { id: 6, name: 'Budget Analysis', type: 'XLSX', size: '2.1 MB', creator: 'John Smith', createdDate: '2024-01-05', lastModified: '2024-01-13 14:45:00', status: 'Active' },
+  { id: 7, name: 'Meeting Notes', type: 'DOCX', size: '245 KB', creator: 'Sarah Johnson', createdDate: '2024-01-03', lastModified: '2024-01-12 11:20:00', status: 'Archived' },
+  { id: 8, name: 'Technical Specifications', type: 'PDF', size: '4.7 MB', creator: 'Mike Chen', createdDate: '2023-12-28', lastModified: '2024-01-11 15:10:00', status: 'Active' }
+];
+
 export default function DocumentsList() {
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
-
-  // Demo data for documents
-  const documents: Document[] = [
-    { id: 1, name: 'Q1 Financial Report', type: 'PDF', size: '2.4 MB', creator: 'John Smith', createdDate: '2024-01-15', lastModified: '2024-01-15 10:30:00', status: 'Active' },
-    { id: 2, name: 'Marketing Strategy 2024', type: 'DOCX', size: '1.8 MB', creator: 'Sarah Johnson', createdDate: '2024-01-14', lastModified: '2024-01-15 09:15:00', status: 'Active' },
-    { id: 3, name: 'Employee Handbook', type: 'PDF', size: '3.2 MB', creator: 'Mike Chen', createdDate: '2024-01-10', lastModified: '2024-01-15 09:45:00', status: 'Active' },
-    { id: 4, name: 'Project Timeline', type: 'XLSX', size: '856 KB', creator: 'Emily Davis', createdDate: '2024-01-12', lastModified: '2024-01-15 08:20:00', status: 'Archived' },
-    { id: 5, name: 'Company Policies', type: 'PDF', size: '1.5 MB', creator: 'Robert Wilson', createdDate: '2024-01-08', lastModified: '2024-01-14 16:30:00', status: 'Active' },
-    { id: 6, name: 'Budget Analysis', type: 'XLSX', size: '2.1 MB', creator: 'John Smith', createdDate: '2024-01-05', lastModified: '2024-01-13 14:45:00', status: 'Active' },
-    { id: 7, name: 'Meeting Notes', type: 'DOCX', size: '245 KB', creator: 'Sarah Johnson', createdDate: '2024-01-03', lastModified: '2024-01-12 11:20:00', status: 'Archived' },
-    { id: 8, name: 'Technical Specifications', type: 'PDF', size: '4.7 MB', creator: 'Mike Chen', createdDate: '2023-12-28', lastModified: '2024-01-11 15:10:00', status: 'Active' }
-  ];
 
   // Filter documents based on search term
   const filteredDocuments = useMemo(() => {
@@ -48,19 +48,6 @@ export default function DocumentsList() {
       : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded-full text-xs font-medium';
   };
 
-  const getFileIcon = (type: string) => {
-    const iconClass = "w-5 h-5";
-    switch (type.toLowerCase()) {
-      case 'pdf':
-        return <FileText className={`${iconClass} text-red-500`} />;
-      case 'docx':
-        return <FileText className={`${iconClass} text-blue-500`} />;
-      case 'xlsx':
-        return <FileText className={`${iconClass} text-green-500`} />;
-      default:
-        return <FileText className={`${iconClass} text-gray-500`} />;
-    }
-  };
 
   const handleView = (docId: number) => {
     router.push(`/document/${docId}`);
@@ -141,7 +128,7 @@ export default function DocumentsList() {
                   {searchTerm ? (
                     <div>
                       <p className="text-lg font-medium">No documents found</p>
-                      <p className="text-sm">No documents match your search criteria "{searchTerm}"</p>
+                      <p className="text-sm">No documents match your search criteria &quot;{searchTerm}&quot;</p>
                     </div>
                   ) : (
                     <p>No documents available</p>
