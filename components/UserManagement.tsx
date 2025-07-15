@@ -1,6 +1,6 @@
 'use client';
 
-import { Eye, UserCheck, UserX, Copy, Activity } from 'lucide-react';
+import { Eye, UserCheck, UserX, Copy, Activity, FileText } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import UserInfoModal from './modals/UserInfoModal';
@@ -88,6 +88,10 @@ export default function UserManagement() {
     router.push(`/user/${userId}/activity`);
   };
 
+  const handleViewDocuments = (userId: number) => {
+    router.push(`/user/${userId}/documents`);
+  };
+
   return (
     <>
       <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
@@ -151,13 +155,20 @@ export default function UserManagement() {
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{user.lastLogin}</td>
                 <td className="px-6 py-4">
-                  <div className="flex space-x-2">
+                  <div className="flex space-x-3">
                     <button 
                       onClick={() => handleViewUser(user.id)}
                       className="text-blue-600 hover:text-blue-800 dark:text-blue-400"
                       title="View user details"
                     >
                       <Eye className="w-4 h-4" />
+                    </button>
+                    <button 
+                      onClick={() => handleViewDocuments(user.id)}
+                      className="text-purple-600 hover:text-purple-800 dark:text-purple-400"
+                      title="View user documents"
+                    >
+                      <FileText className="w-4 h-4" />
                     </button>
                     <button 
                       onClick={() => handleViewActivity(user.id)}
