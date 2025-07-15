@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, FileText, Calendar, User, Search, Filter, Eye } from 'lucide-react';
+import { ArrowLeft, FileText, Calendar, User, Search, Filter, Eye, ChevronUp, ChevronDown } from 'lucide-react';
 import { useState, useMemo } from 'react';
 
 interface UserDocument {
@@ -21,6 +21,8 @@ export default function UserDocuments() {
   
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [sortField, setSortField] = useState<'createdDate' | 'lastModified'>('lastModified');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   // Get user name based on ID
   const getUserName = (id: number): string => {
@@ -97,13 +99,38 @@ export default function UserDocuments() {
       filtered = filtered.filter(doc => doc.status === statusFilter);
     }
 
-    return filtered.sort((a, b) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime());
-  }, [rawDocuments, searchTerm, statusFilter]);
+    // Sort by selected field and order
+    return filtered.sort((a, b) => {
+      const dateA = new Date(sortField === 'createdDate' ? a.createdDate : a.lastModified).getTime();
+      const dateB = new Date(sortField === 'createdDate' ? b.createdDate : b.lastModified).getTime();
+      return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
+    });
+  }, [rawDocuments, searchTerm, statusFilter, sortField, sortOrder]);
 
   const getStatusBadge = (status: string) => {
     return status === 'Active' 
       ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 px-2 py-1 rounded-full text-xs font-medium'
       : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded-full text-xs font-medium';
+  };
+
+  const handleSort = (field: 'createdDate' | 'lastModified') => {
+    if (sortField === field) {
+      // Toggle sort order if same field
+      setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc');
+    } else {
+      // Set new field with descending order
+      setSortField(field);
+      setSortOrder('desc');
+    }
+  };
+
+  const getSortIcon = (field: 'createdDate' | 'lastModified') => {
+    if (sortField !== field) return null;
+    return sortOrder === 'desc' ? (
+      <ChevronDown className="w-4 h-4" />
+    ) : (
+      <ChevronUp className="w-4 h-4" />
+    );
   };
 
   const handleViewDocument = (docId: number) => {
@@ -203,7 +230,24 @@ export default function UserDocuments() {
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Document</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Last Modified</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <button
+                      onClick={() => handleSort('createdDate')}
+                      className="flex items-center space-x-1 hover:text-gray-700 dark:hover:text-gray-100 transition-colors"
+                    >
+                      <span>Created Date</span>
+                      {getSortIcon('createdDate')}
+                    </button>
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <button
+                      onClick={() => handleSort('lastModified')}
+                      className="flex items-center space-x-1 hover:text-gray-700 dark:hover:text-gray-100 transition-colors"
+                    >
+                      <span>Last Modified</span>
+                      {getSortIcon('lastModified')}
+                    </button>
+                  </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
@@ -216,14 +260,19 @@ export default function UserDocuments() {
                           <FileText className="w-5 h-5 text-gray-400" />
                           <div>
                             <div className="text-sm font-medium text-gray-900 dark:text-white">{doc.name}</div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              Created {new Date(doc.createdDate).toLocaleDateString()}
-                            </div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4">
                         <span className={getStatusBadge(doc.status)}>{doc.status}</span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center space-x-2">
+                          <Calendar className="w-4 h-4 text-gray-400" />
+                          <span className="text-sm text-gray-500 dark:text-gray-400">
+                            {new Date(doc.createdDate).toLocaleDateString()}
+                          </span>
+                        </div>
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center space-x-2">
@@ -248,7 +297,7 @@ export default function UserDocuments() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={4} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                    <td colSpan={5} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                       <div>
                         <FileText className="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
                         {searchTerm || statusFilter ? (
