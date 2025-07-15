@@ -76,7 +76,7 @@ export default function UserDocuments() {
 
   // Get unique statuses for filter dropdown
   const uniqueStatuses = useMemo(() => {
-    const statuses = [...new Set(rawDocuments.map(doc => doc.status))];
+    const statuses = Array.from(new Set(rawDocuments.map(doc => doc.status)));
     return statuses.sort();
   }, [rawDocuments]);
 
@@ -259,7 +259,7 @@ export default function UserDocuments() {
                         ) : (
                           <div>
                             <p className="text-lg font-medium">No documents found</p>
-                            <p className="text-sm">This user hasn't created any documents yet.</p>
+                            <p className="text-sm">This user hasn&apos;t created any documents yet.</p>
                           </div>
                         )}
                       </div>

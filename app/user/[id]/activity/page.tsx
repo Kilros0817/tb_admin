@@ -85,7 +85,7 @@ export default function UserActivityLog() {
 
   // Get unique actions for filter dropdown
   const uniqueActions = useMemo(() => {
-    const actions = [...new Set(rawActivityLogs.map(log => log.action))];
+    const actions = Array.from(new Set(rawActivityLogs.map(log => log.action)));
     return actions.sort();
   }, [rawActivityLogs]);
 

@@ -1,7 +1,5 @@
 'use client';
 
-import { Download } from 'lucide-react';
-
 interface Activity {
   id: number;
   timestamp: string;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Download, Eye, Edit, Trash2, FileText, Calendar, User } from 'lucide-react';
+import { Eye, Calendar, User } from 'lucide-react';
 import { useState, useMemo } from 'react';
 
 interface Document {

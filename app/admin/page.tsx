@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { Shield, Users, Activity, Settings, Sun, Moon, LogOut } from 'lucide-react';
+import { Shield, Users, Sun, Moon, LogOut } from 'lucide-react';
 import { FileText } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
