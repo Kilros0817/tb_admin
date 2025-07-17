@@ -2,6 +2,8 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Calendar, User, FileText } from 'lucide-react';
+import Header from '@/components/Header';
+import { useAccount } from 'wagmi';
 
 interface DocumentDetails {
   id: number;
@@ -21,101 +23,102 @@ export default function DocumentDetails() {
   const router = useRouter();
   const documentId = parseInt(params.id as string);
 
+  const { isConnected } = useAccount();
   // Demo data for document details
   const getDocumentDetails = (id: number): DocumentDetails | null => {
     const documents: DocumentDetails[] = [
-      { 
-        id: 1, 
-        name: 'Q1 Financial Report', 
-        type: 'PDF', 
-        size: '2.4 MB', 
-        creator: 'John Smith', 
-        createdDate: '2024-01-15', 
-        lastModified: '2024-01-15 10:30:00', 
+      {
+        id: 1,
+        name: 'Q1 Financial Report',
+        type: 'PDF',
+        size: '2.4 MB',
+        creator: 'John Smith',
+        createdDate: '2024-01-15',
+        lastModified: '2024-01-15 10:30:00',
         status: 'Active',
         description: 'Quarterly financial report covering revenue, expenses, and profit analysis for Q1 2024.',
         content: 'This document contains detailed financial analysis including revenue breakdown, expense categories, profit margins, and comparative analysis with previous quarters.'
       },
-      { 
-        id: 2, 
-        name: 'Marketing Strategy 2024', 
-        type: 'DOCX', 
-        size: '1.8 MB', 
-        creator: 'Sarah Johnson', 
-        createdDate: '2024-01-14', 
-        lastModified: '2024-01-15 09:15:00', 
+      {
+        id: 2,
+        name: 'Marketing Strategy 2024',
+        type: 'DOCX',
+        size: '1.8 MB',
+        creator: 'Sarah Johnson',
+        createdDate: '2024-01-14',
+        lastModified: '2024-01-15 09:15:00',
         status: 'Active',
         description: 'Comprehensive marketing strategy document outlining goals, tactics, and budget allocation for 2024.',
         content: 'Strategic marketing plan including target audience analysis, campaign strategies, digital marketing initiatives, and budget distribution across various channels.'
       },
-      { 
-        id: 3, 
-        name: 'Employee Handbook', 
-        type: 'PDF', 
-        size: '3.2 MB', 
-        creator: 'Mike Chen', 
-        createdDate: '2024-01-10', 
-        lastModified: '2024-01-15 09:45:00', 
+      {
+        id: 3,
+        name: 'Employee Handbook',
+        type: 'PDF',
+        size: '3.2 MB',
+        creator: 'Mike Chen',
+        createdDate: '2024-01-10',
+        lastModified: '2024-01-15 09:45:00',
         status: 'Active',
         description: 'Complete employee handbook covering company policies, procedures, and guidelines.',
         content: 'Comprehensive guide covering company policies, code of conduct, benefits information, leave policies, and workplace guidelines for all employees.'
       },
-      { 
-        id: 4, 
-        name: 'Project Timeline', 
-        type: 'XLSX', 
-        size: '856 KB', 
-        creator: 'Emily Davis', 
-        createdDate: '2024-01-12', 
-        lastModified: '2024-01-15 08:20:00', 
+      {
+        id: 4,
+        name: 'Project Timeline',
+        type: 'XLSX',
+        size: '856 KB',
+        creator: 'Emily Davis',
+        createdDate: '2024-01-12',
+        lastModified: '2024-01-15 08:20:00',
         status: 'Archived',
         description: 'Project timeline spreadsheet with milestones, deadlines, and resource allocation.',
         content: 'Detailed project timeline including task dependencies, milestone dates, resource assignments, and progress tracking for the current project phase.'
       },
-      { 
-        id: 5, 
-        name: 'Company Policies', 
-        type: 'PDF', 
-        size: '1.5 MB', 
-        creator: 'Robert Wilson', 
-        createdDate: '2024-01-08', 
-        lastModified: '2024-01-14 16:30:00', 
+      {
+        id: 5,
+        name: 'Company Policies',
+        type: 'PDF',
+        size: '1.5 MB',
+        creator: 'Robert Wilson',
+        createdDate: '2024-01-08',
+        lastModified: '2024-01-14 16:30:00',
         status: 'Active',
         description: 'Official company policies and procedures document.',
         content: 'Official documentation of company policies including HR policies, IT security guidelines, workplace safety procedures, and compliance requirements.'
       },
-      { 
-        id: 6, 
-        name: 'Budget Analysis', 
-        type: 'XLSX', 
-        size: '2.1 MB', 
-        creator: 'John Smith', 
-        createdDate: '2024-01-05', 
-        lastModified: '2024-01-13 14:45:00', 
+      {
+        id: 6,
+        name: 'Budget Analysis',
+        type: 'XLSX',
+        size: '2.1 MB',
+        creator: 'John Smith',
+        createdDate: '2024-01-05',
+        lastModified: '2024-01-13 14:45:00',
         status: 'Active',
         description: 'Detailed budget analysis with variance reports and forecasting.',
         content: 'Comprehensive budget analysis including actual vs planned spending, variance analysis, cost center breakdowns, and financial forecasting for upcoming quarters.'
       },
-      { 
-        id: 7, 
-        name: 'Meeting Notes', 
-        type: 'DOCX', 
-        size: '245 KB', 
-        creator: 'Sarah Johnson', 
-        createdDate: '2024-01-03', 
-        lastModified: '2024-01-12 11:20:00', 
+      {
+        id: 7,
+        name: 'Meeting Notes',
+        type: 'DOCX',
+        size: '245 KB',
+        creator: 'Sarah Johnson',
+        createdDate: '2024-01-03',
+        lastModified: '2024-01-12 11:20:00',
         status: 'Archived',
         description: 'Meeting notes from quarterly review sessions.',
         content: 'Detailed notes from quarterly review meetings including action items, decisions made, participant feedback, and follow-up tasks assigned to team members.'
       },
-      { 
-        id: 8, 
-        name: 'Technical Specifications', 
-        type: 'PDF', 
-        size: '4.7 MB', 
-        creator: 'Mike Chen', 
-        createdDate: '2023-12-28', 
-        lastModified: '2024-01-11 15:10:00', 
+      {
+        id: 8,
+        name: 'Technical Specifications',
+        type: 'PDF',
+        size: '4.7 MB',
+        creator: 'Mike Chen',
+        createdDate: '2023-12-28',
+        lastModified: '2024-01-11 15:10:00',
         status: 'Active',
         description: 'Technical specifications and system requirements documentation.',
         content: 'Detailed technical documentation including system architecture, API specifications, database schema, security requirements, and implementation guidelines.'
@@ -145,16 +148,17 @@ export default function DocumentDetails() {
   }
 
   const getStatusBadge = (status: string) => {
-    return status === 'Active' 
+    return status === 'Active'
       ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 px-3 py-1 rounded-full text-sm font-medium'
       : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm font-medium';
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between">
           <div className="flex items-center space-x-4">
             <button
               onClick={() => router.back()}
@@ -173,6 +177,7 @@ export default function DocumentDetails() {
               </div>
             </div>
           </div>
+          <Header />
         </div>
       </div>
 

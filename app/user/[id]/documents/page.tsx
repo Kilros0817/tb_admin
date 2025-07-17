@@ -3,6 +3,8 @@
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, FileText, Calendar, User, Search, Filter, Eye, ChevronUp, ChevronDown } from 'lucide-react';
 import { useState, useMemo } from 'react';
+import Header from '@/components/Header';
+import { useAccount } from 'wagmi';
 
 interface UserDocument {
   id: number;
@@ -18,7 +20,7 @@ export default function UserDocuments() {
   const params = useParams();
   const router = useRouter();
   const userId = parseInt(params.id as string);
-  
+
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [sortField, setSortField] = useState<'createdDate' | 'lastModified'>('lastModified');
@@ -42,18 +44,18 @@ export default function UserDocuments() {
       // John Smith (ID: 1)
       { id: 1, name: 'Q1 Financial Report', type: 'PDF', size: '2.4 MB', createdDate: '2024-01-15', lastModified: '2024-01-15 10:30:00', status: 'Active' },
       { id: 6, name: 'Budget Analysis', type: 'XLSX', size: '2.1 MB', createdDate: '2024-01-05', lastModified: '2024-01-13 14:45:00', status: 'Active' },
-      
+
       // Sarah Johnson (ID: 2)
       { id: 2, name: 'Marketing Strategy 2024', type: 'DOCX', size: '1.8 MB', createdDate: '2024-01-14', lastModified: '2024-01-15 09:15:00', status: 'Active' },
       { id: 7, name: 'Meeting Notes', type: 'DOCX', size: '245 KB', createdDate: '2024-01-03', lastModified: '2024-01-12 11:20:00', status: 'Archived' },
-      
+
       // Mike Chen (ID: 3)
       { id: 3, name: 'Employee Handbook', type: 'PDF', size: '3.2 MB', createdDate: '2024-01-10', lastModified: '2024-01-15 09:45:00', status: 'Active' },
       { id: 8, name: 'Technical Specifications', type: 'PDF', size: '4.7 MB', createdDate: '2023-12-28', lastModified: '2024-01-11 15:10:00', status: 'Active' },
-      
+
       // Emily Davis (ID: 4)
       { id: 4, name: 'Project Timeline', type: 'XLSX', size: '856 KB', createdDate: '2024-01-12', lastModified: '2024-01-15 08:20:00', status: 'Archived' },
-      
+
       // Robert Wilson (ID: 5)
       { id: 5, name: 'Company Policies', type: 'PDF', size: '1.5 MB', createdDate: '2024-01-08', lastModified: '2024-01-14 16:30:00', status: 'Active' }
     ];
@@ -88,7 +90,7 @@ export default function UserDocuments() {
 
     // Apply search filter
     if (searchTerm) {
-      filtered = filtered.filter(doc => 
+      filtered = filtered.filter(doc =>
         doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         doc.type.toLowerCase().includes(searchTerm.toLowerCase())
       );
@@ -108,7 +110,7 @@ export default function UserDocuments() {
   }, [rawDocuments, searchTerm, statusFilter, sortField, sortOrder]);
 
   const getStatusBadge = (status: string) => {
-    return status === 'Active' 
+    return status === 'Active'
       ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 px-2 py-1 rounded-full text-xs font-medium'
       : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded-full text-xs font-medium';
   };
@@ -141,7 +143,7 @@ export default function UserDocuments() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between">
           <div className="flex items-center space-x-4">
             <button
               onClick={() => router.back()}
@@ -160,9 +162,9 @@ export default function UserDocuments() {
               </div>
             </div>
           </div>
+          <Header />
         </div>
       </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
           {/* User Info Header with Filters */}
@@ -284,7 +286,7 @@ export default function UserDocuments() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex justify-center">
-                          <button 
+                          <button
                             onClick={() => handleViewDocument(doc.id)}
                             className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                             title="View document"

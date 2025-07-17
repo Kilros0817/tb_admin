@@ -3,6 +3,8 @@
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Activity, Calendar, User, ChevronUp, ChevronDown, Search, Filter } from 'lucide-react';
 import { useState, useMemo } from 'react';
+import Header from '@/components/Header';
+import { useAccount } from 'wagmi';
 
 interface ActivityLog {
   id: number;
@@ -16,7 +18,8 @@ export default function UserActivityLog() {
   const params = useParams();
   const router = useRouter();
   const userId = parseInt(params.id as string);
-  
+
+  const { isConnected } = useAccount();
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [actionFilter, setActionFilter] = useState('');
   const [documentSearch, setDocumentSearch] = useState('');
@@ -41,24 +44,24 @@ export default function UserActivityLog() {
       { id: 4, timestamp: '2024-01-15 09:30:00', action: 'Login', documentName: '-', details: 'User logged into system' },
       { id: 9, timestamp: '2024-01-13 14:45:00', action: 'Access Document', documentName: 'Budget Analysis', details: 'Opened document for viewing' },
       { id: 10, timestamp: '2024-01-12 16:20:00', action: 'Edit Document', documentName: 'Q1 Financial Report', details: 'Modified financial data section' },
-      
+
       // Sarah Johnson (ID: 2)
       { id: 2, timestamp: '2024-01-15 10:15:00', action: 'Access Document', documentName: 'Marketing Strategy 2024', details: 'Opened document for viewing' },
       { id: 6, timestamp: '2024-01-15 08:45:00', action: 'Login', documentName: '-', details: 'User logged into system' },
       { id: 11, timestamp: '2024-01-12 11:20:00', action: 'Create Document', documentName: 'Meeting Notes', details: 'Created new document' },
       { id: 12, timestamp: '2024-01-11 09:30:00', action: 'Document Export', documentName: 'Marketing Strategy 2024', details: 'Exported as PDF' },
-      
+
       // Mike Chen (ID: 3)
       { id: 3, timestamp: '2024-01-15 09:45:00', action: 'Edit Document', documentName: 'Employee Handbook', details: 'Modified section 3.2' },
       { id: 8, timestamp: '2024-01-14 16:20:00', action: 'Login', documentName: '-', details: 'User logged into system' },
       { id: 13, timestamp: '2024-01-11 15:10:00', action: 'Create Document', documentName: 'Technical Specifications', details: 'Created new document' },
       { id: 14, timestamp: '2024-01-10 14:30:00', action: 'Access Document', documentName: 'Employee Handbook', details: 'Opened document for viewing' },
-      
+
       // Emily Davis (ID: 4)
       { id: 5, timestamp: '2024-01-15 09:20:00', action: 'Document Export', documentName: 'Project Timeline', details: 'Exported as PDF' },
       { id: 15, timestamp: '2024-01-12 08:20:00', action: 'Create Document', documentName: 'Project Timeline', details: 'Created new document' },
       { id: 16, timestamp: '2024-01-10 14:15:00', action: 'Login', documentName: '-', details: 'User logged into system' },
-      
+
       // Robert Wilson (ID: 5)
       { id: 7, timestamp: '2024-01-14 16:30:00', action: 'Access Document', documentName: 'Company Policies', details: 'Opened document for viewing' },
       { id: 17, timestamp: '2024-01-15 07:30:00', action: 'Login', documentName: '-', details: 'User logged into system' },
@@ -100,7 +103,7 @@ export default function UserActivityLog() {
 
     // Apply document search
     if (documentSearch) {
-      filtered = filtered.filter(log => 
+      filtered = filtered.filter(log =>
         log.documentName.toLowerCase().includes(documentSearch.toLowerCase())
       );
     }
@@ -132,7 +135,7 @@ export default function UserActivityLog() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between">
           <div className="flex items-center space-x-4">
             <button
               onClick={() => router.back()}
@@ -151,6 +154,7 @@ export default function UserActivityLog() {
               </div>
             </div>
           </div>
+          <Header />
         </div>
       </div>
 

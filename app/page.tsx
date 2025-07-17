@@ -2,23 +2,19 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Shield, Users, Activity, Settings, Sun, Moon, Loader2 } from 'lucide-react';
+import { Shield, Users, Activity, Settings, Loader2 } from 'lucide-react';
 import { WALLET_ADAPTERS } from "@web3auth/base";
 import { useTBContext } from '@/context/Context';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAccount } from 'wagmi';
+import SwitchTheme from '@/components/base/SwitchTheme';
 
 export default function Login() {
   const router = useRouter();
   const { web3Auth } = useTBContext();
-  const [theme, setTheme] = useState('dark');
   const [email, setEmail] = useState<string>("");
   const { isConnected, isConnecting } = useAccount();
-
-  const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
-  };
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     if (web3Auth?.connected || !web3Auth) return;
@@ -37,27 +33,12 @@ export default function Login() {
     }
   };
 
-  // Initialize theme from localStorage or system preference
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const initialTheme = savedTheme || 'dark';
-    setTheme(initialTheme);
-  }, []);
-
-  // Apply theme changes
-  useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('theme', theme);
-  }, [theme]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
     interval = setInterval(() => {
       if (web3Auth?.connected && isConnected) {
+        console.log(web3Auth.connected)
         clearInterval(interval);
         router.push("/admin");
       }
@@ -68,19 +49,9 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4 transition-colors duration-200">
-      {/* Theme Toggle Button */}
-      <button
-        onClick={toggleTheme}
-        className="fixed top-6 right-6 p-3 rounded-full bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200 dark:border-gray-700"
-        title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-      >
-        {theme === 'light' ? (
-          <Moon className="w-5 h-5 text-gray-600" />
-        ) : (
-          <Sun className="w-5 h-5 text-yellow-500" />
-        )}
-      </button>
-
+      <div className='fixed top-6 right-6'>
+        <SwitchTheme />
+      </div>
       <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 text-center border border-gray-200 dark:border-gray-700 transition-colors duration-200">
         <div className="mb-6">
           <div className="w-16 h-16 bg-blue-600 dark:bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 transition-colors duration-200">

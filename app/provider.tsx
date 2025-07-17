@@ -24,6 +24,8 @@ const TBProvider: React.FC<TBProviderProps> = ({ children }: any) => {
 
   const [web3Auth, setWeb3Auth] = useState<Web3AuthInstance | null>(null);
 
+  const [theme, setTheme] = useState<string>('dark');
+
   useEffect(() => {
     const init = async () => {
       try {
@@ -63,7 +65,9 @@ const TBProvider: React.FC<TBProviderProps> = ({ children }: any) => {
             <div className="flex flex-col">
               <TBContext.Provider
                 value={{
-                  web3Auth
+                  web3Auth,
+                  theme,
+                  setTheme
                 }}
               >
                 {children}
