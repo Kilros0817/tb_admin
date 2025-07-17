@@ -26,27 +26,6 @@ export default function AdminDashboard() {
   const [theme, setTheme] = useState('dark');
   const { disconnect } = useDisconnect();
 
-  // Initialize theme from localStorage or system preference
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const initialTheme = savedTheme || 'dark';
-    setTheme(initialTheme);
-  }, []);
-
-  // Apply theme changes
-  useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
-  };
-
   const handleLogout = () => {
     disconnect();
     window.location.href = "/";
@@ -78,17 +57,6 @@ export default function AdminDashboard() {
               </div>
             </div>
             <div className="flex items-center space-x-3">
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
-                title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-              >
-                {theme === 'light' ? (
-                  <Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-                ) : (
-                  <Sun className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-                )}
-              </button>
               <button
                 onClick={handleLogout}
                 className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-red-100 hover:bg-red-200 dark:bg-red-900 dark:hover:bg-red-800 text-red-700 dark:text-red-300 transition-colors"
