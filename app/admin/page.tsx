@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { Shield, Users, Sun, Moon, LogOut } from 'lucide-react';
 import { FileText } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
+import { useDisconnect } from 'wagmi';
 
 // Dynamic imports for tab components
 const UserManagement = dynamic(() => import('@/components/UserManagement'), {
@@ -22,7 +22,7 @@ const DocumentsList = dynamic(() => import('@/components/DocumentsList'), {
 });
 
 export default function AdminDashboard() {
-  const router = useRouter();
+  const { disconnect } = useDisconnect();
   const [activeTab, setActiveTab] = useState('users');
   const [theme, setTheme] = useState('dark');
 
@@ -48,7 +48,10 @@ export default function AdminDashboard() {
   };
 
   const handleLogout = () => {
-    router.push('/');
+    disconnect();
+    setInterval(() => {
+      window.location.href = "/";
+    }, 1000);
   };
   const renderActiveTab = () => {
     switch (activeTab) {
