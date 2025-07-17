@@ -1,6 +1,6 @@
 'use client';
 
-import { Eye, UserCheck, UserX, Activity, FileText } from 'lucide-react';
+import { Eye, UserCheck, UserX, Copy, Activity, FileText } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import UserInfoModal from './modals/UserInfoModal';

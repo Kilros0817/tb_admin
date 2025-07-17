@@ -23,6 +23,7 @@ const TBProvider: React.FC<TBProviderProps> = ({ children }: any) => {
   const [config, setConfig] = useState<Config | null>(null);
 
   const [web3Auth, setWeb3Auth] = useState<Web3AuthInstance | null>(null);
+  const [isAuth, setIsAuth] = useState<boolean>(false);
 
 
   useEffect(() => {
@@ -54,7 +55,7 @@ const TBProvider: React.FC<TBProviderProps> = ({ children }: any) => {
 
     init();
 
-  }, []);
+  }, []); // Empty dependency array to ensure this runs only once
 
   return (
     <div className="min-h-screen bg-[#1a1d21]">
@@ -65,6 +66,8 @@ const TBProvider: React.FC<TBProviderProps> = ({ children }: any) => {
               <TBContext.Provider
                 value={{
                   web3Auth,
+                  isAuth,
+                  setIsAuth
                 }}
               >
                 {children}
@@ -76,7 +79,7 @@ const TBProvider: React.FC<TBProviderProps> = ({ children }: any) => {
       )}
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={10000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
